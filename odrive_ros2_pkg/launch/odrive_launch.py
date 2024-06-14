@@ -1,8 +1,13 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.substitutions import LaunchConfiguration
+from launch_ros.parameter_descriptions import ParameterValue
 
 
 def generate_launch_description():
+    publish_odom_tf = LaunchConfiguration("publish_odom_tf")
+    publish_odom_tf_bool = ParameterValue(publish_odom_tf, value_type=bool)
+
     return LaunchDescription(
         [
             Node(
@@ -15,8 +20,8 @@ def generate_launch_description():
                     {
                         "simulation_mode": False,
                         "wheel_track": 0.278,
-                        "tyre_circumference": 0.509,
-                        "publish_odom_tf": True,
+                        "tyre_circumference": 0.5,
+                        "publish_odom_tf": publish_odom_tf_bool,
                     }
                 ],
             ),
