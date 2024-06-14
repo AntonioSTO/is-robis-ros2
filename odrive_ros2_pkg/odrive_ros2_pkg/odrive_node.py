@@ -286,8 +286,8 @@ class OdriveNode(Node):
         self.x = 0.0
         self.y = 0.0
         self.theta = 0.0
-        #response.data = True
-        #response.msg = "Odometry reset."
+        # response.data = True
+        # response.msg = "Odometry reset."
         self.get_logger().info("Odometry request reset!\n")
         return response
 
@@ -460,12 +460,18 @@ class OdriveNode(Node):
         # Twist/velocity: calculated from motor values only
         # s = tyre_circumference * (self.vel_r-self.vel_l) / (2.0)
         # w = tyre_circumference* (self.vel_r+self.vel_l) / (wheel_track) # angle: vel_r*tyre_radius - vel_l*tyre_radius
-        s = tyre_circumference * (self.vel_l + self.vel_r) / (2.0 * self.encoder_cpr)
+        const_velocity = 100  # for some reason that i don't know, the velocity must be multiplied by this const
+        s = (
+            const_velocity
+            * tyre_circumference
+            * (self.vel_l + self.vel_r)
+            / (2.0 * self.encoder_cpr)
+        )
         w = (
             tyre_circumference
             * (self.vel_r - self.vel_l)
             / (wheel_track * self.encoder_cpr)
-        )
+        ) * const_velocity
         self.odom_msg.twist.twist.linear.x = s
         self.odom_msg.twist.twist.angular.z = w
 
@@ -537,9 +543,9 @@ def main(args=None):
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    #node.shutdown()
-    #node.destroy_node()
-    #rclpy.shutdown()
+    # node.shutdown()
+    # node.destroy_node()
+    # rclpy.shutdown()
 
 
 if __name__ == "__main__":

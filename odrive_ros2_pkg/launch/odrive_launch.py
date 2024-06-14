@@ -14,16 +14,27 @@ def generate_launch_description():
                 parameters=[
                     {
                         "simulation_mode": False,
-                        "wheel_track": 0.35,
-                        "tyre_circumference": 0.537,
+                        "wheel_track": 0.278,
+                        "tyre_circumference": 0.509,
+                        "publish_odom_tf": True,
                     }
                 ],
             ),
             Node(
-                package='tf2_ros',
-                executable='static_transform_publisher',
-                name='base_link_broadcaster',
-                arguments=['0', '0', '0','0', '0', '0', '1','base_link','base_footprint'],
-            )
+                package="tf2_ros",
+                executable="static_transform_publisher",
+                name="base_link_broadcaster",
+                arguments=[
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "0",
+                    "1",
+                    "base_link",
+                    "base_footprint",
+                ],
+            ),
         ]
     )
